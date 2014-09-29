@@ -8,9 +8,9 @@ void main()
 	scanf("%d", &n);
 	printf("Enter the elements rowwise \n");
 
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
-		for (j = 0; j < n; j++)
+		for (j = 1; j <= n; j++)
 		{
 			scanf("%f", &a[i][j]);
 		}
@@ -18,43 +18,43 @@ void main()
 
 	printf("Enter the right hand vector\n");
 
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
 		scanf("%f", &b[i]);
 	}
 
 	// computations of L and U matrices
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
 		l[i][1] = a[i][1];
 	}
 
-	for (j = 1; j < n; j++)
+	for (j = 2; j <= n; j++)
 	{
 		u[1][j] = a[1][j] / l[1][1];
 	}
 
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
 		u[i][i] = 1;
 	}
 
-	for (i = 1; i < n; i++)
+	for (i = 2; i <= n; i++)
 	{
-		for (j = 1; j < n; j++)
+		for (j = 2; j <= n; j++)
 		{
 			if (i >= j)
 			{
 				l[i][j] = a[i][j];
-				for (k = 0; k <= j - 1; k++)
+				for (k = 1; k <= j - 1; k++)
 				{
-					l[i][k] -= l[i][k] * u[k][j];
+					l[i][j] -= l[i][k] * u[k][j];
 				}
 			}
 			else
 			{
 				u[i][j] = a[i][j];
-				for (k = 0; k <= i - 1; k++)
+				for (k = 1; k <= i - 1; k++)
 				{
 					u[i][j] -= l[i][k] * u[k][j];
 					u[i][j] /= l[i][i];
@@ -64,25 +64,25 @@ void main()
 	}
 
 	printf("\nThe lower triangular matrix L\n");
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
-		for (j = 0; j < i; j++)
+		for (j = 1; j <= i; j++)
 		{
-			printf("%f ", l[i][j]);
+			printf("%.2f ", l[i][j]);
 		}
 		printf("\n");
 	}
 
 	printf("\nThe upper triangular matrix U\n");
 
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
-		for (j = 0; j < i; j++)
+		for (j = 1; j < i; j++)
 		{
-			printf("             " );
+			printf("      " );
 		}
 
-		for (j = i; j < n; j++)
+		for (j = i; j <= n; j++)
 		{
 			printf("%.2f ", u[i][j]);
 		}
@@ -92,19 +92,19 @@ void main()
 
 	// solve lz=b by forward substitution
 	z[1] = b[1] / l[1][1];
-	for (i = 0; i < n; i++)
+	for (i = 2; i <= n; i++)
 	{
 		z[i] = b[i];
-		for (j = 0; j < i - 1; j++)
+		for (j = 1; j <= i - 1; j++)
 		{
 			z[i] -= l[i][j] * z[j];
-			z[i] /= l[i][i];
 		}
+		z[i] /= l[i][i];
 	}
 
 	//solve Ux=z by backward substitution 
 	x[n] = z[n];
-	for (i = n - 1; i > 0; i--)
+	for (i = n - 1; i >= 1; i--)
 	{
 		x[i] = z[i];
 		for (j = i + 1; j <= n; j++)
@@ -114,8 +114,10 @@ void main()
 	}
 
 	printf("The solution is ");
-	for (i = 0; i < n; i++)
+	for (i = 1; i <= n; i++)
 	{
-		printf("%.2f ", x[i]);
+		printf("%f ", x[i]);
 	}
+
+	printf("\n");
 }
