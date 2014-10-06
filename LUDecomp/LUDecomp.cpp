@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include "Matrix.h"
 #include "Vector.h"
+#include <fstream>
+#include <iomanip>
 
-void LUDecomp(CMatrix a, CVector b, CMatrix& l, CMatrix& u, CVector& x)
+// General LU-Decomposition 
+void LUDecomp(
+	CMatrix a, 
+	CVector b, 
+	CMatrix& l, 
+	CMatrix& u, 
+	CVector& x)
 {
 	CVector  z(b.GetSize());
 	int i = 0, j = 0, k = 0, n = b.GetSize();
@@ -72,8 +80,11 @@ void LUDecomp(CMatrix a, CVector b, CMatrix& l, CMatrix& u, CVector& x)
 	}
 }
 
-// Tridiagnonal Systems
-void LUDecompTridiagnoal(CMatrix a, CVector b, CMatrix& l, CMatrix& u, CVector& x)
+// Tridiagnonal Systems (Matrix Form)
+void LUDecompTridiagnoal(
+	CMatrix a, 
+	CVector b, 
+	CMatrix& l, CMatrix& u, CVector& x, CVector& g)
 {
 	int i = 0, j = 0, k = 0, n = b.GetSize();
 	CVector l1(b.GetSize());		//	vector a
@@ -94,13 +105,12 @@ void LUDecompTridiagnoal(CMatrix a, CVector b, CMatrix& l, CMatrix& u, CVector& 
 		}
 
 		l2[i] = a[i][i];
-		
 	}
 
 	CVector alpha(b.GetSize());
 	CVector beta(b.GetSize());
 	CVector gama(b.GetSize());
-	CVector g(b.GetSize());
+	
 
 	// Apply the algorithm of Gauss elimination ( Page 37 )
 	beta[0] = l2[0];
@@ -136,82 +146,112 @@ void LUDecompTridiagnoal(CMatrix a, CVector b, CMatrix& l, CMatrix& u, CVector& 
 	return;
 }
 
+// Tridiagnonal Systems (Vector Form)
+void LUDecompTridiagnoal(
+	CVector l1, CVector l2, CVector l3,							// vector a, b, c in Tridiagnonal matrix
+	CVector b,													
+	CMatrix& l, CMatrix& u, CVector& x, CVector& g)
+{
+	int i = 0, j = 0, k = 0, n = b.GetSize();
+
+	CVector alpha(b.GetSize());
+	CVector beta(b.GetSize());
+	CVector gama(b.GetSize());
+
+
+	// Apply the algorithm of Gauss elimination ( Page 37 )
+	beta[0] = l2[0];
+	g[0] = b[0];
+
+	for (i = 1; i < n; i++)
+	{
+		gama[i] = l1[i] / beta[i - 1];
+		beta[i] = l2[i] - gama[i] * l3[i - 1];
+		g[i] = b[i] - gama[i] * g[i - 1];
+	}
+
+	// computation of L matrix and U matrix
+	for (i = 0; i < n; i++)
+	{
+		l[i][i] = 1;
+		u[i][i] = beta[i];
+
+		if (i + 1 < n)
+		{
+			l[i + 1][i] = gama[i + 1];
+			u[i][i + 1] = l3[i];
+		}
+	}
+
+	// backsubstitution algorithm ( Page 38 )
+	x[n - 1] = g[n - 1] / beta[n - 1];
+	for (i = n - 2; i >= 0; i--)
+	{
+		x[i] = (g[i] - l3[i] * x[i + 1]) / beta[i];
+	}
+
+	return;
+}
+
 
 void main()
 {
-	int n = 4;
-	CMatrix a(n, n);
-	//a[0][0] = 4;     a[0][1] = 2;    a[0][2] = 1;
-	//a[1][0] = 2;     a[1][1] = 5;    a[1][2] = -2;
-	//a[2][0] = 1;     a[2][1] = -2;   a[2][2] = 7;
-	a[0][0] = 3;     a[0][1] = 1;    a[0][2] = 0;	a[0][3] = 0;
-	a[1][0] = 1;     a[1][1] = 3;    a[1][2] = 1;	a[1][3] = 0;
-	a[2][0] = 0;     a[2][1] = 1;    a[2][2] = 3;	a[2][3] = 1;
-	a[3][0] = 0;     a[3][1] = 0;    a[3][2] = 1;	a[3][3] = 3;
-
-	CMatrix l(n, n);
-	CMatrix u(n, n);
-
-	CVector b(n), x(b.GetSize());
-	b[0] = 4;        b[1] = 5;       b[2] = 5;		b[3] = 4;
-	//b[0] = 3;        b[1] = 4;       b[2] = 5;
-
 	int i = 0, j = 0, k = 0;
-	printf("\nEnter the size of the coeficient matrix : %d\n", n);
+	const double PI  = 3.1415926535897932384626433832795;
+	const double PI2 = 9.8696044010893586188344909998762;
 
-	printf("Enter the elements rowwise \n");
+	std::ofstream ofile;              
+	ofile.open("d:\\myfile.csv");     
 
-	for (i = 0; i < n; i++)
+	for (i = 4; i < 10000; i++)
 	{
-		for (j = 0; j < n; j++)
-		{
-			printf("%6.2f\t", a[i][j]);
-		}
-		printf("\n");
-	}
+		CVector l1(i);
+		CVector l2(i);
+		CVector l3(i);
+		CMatrix l(i, i);
+		CMatrix u(i, i);
+		CVector b(i), x(i), g(i);
 
-	printf("\nEnter the right hand vector\n");
-
-	for (i = 0; i < n; i++)
-	{
-		printf("%6.2f\t", b[i]);
-	}
-	printf("\n");
-
-	LUDecompTridiagnoal(a, b, l, u, x);
-
-	printf("\nThe lower triangular matrix L\n");
-	for (i = 0; i < n; i++)
-	{
-		for (j = 0; j <= i; j++)
-		{
-			printf("%6.2f\t", l[i][j]);
-		}
-		printf("\n");
-	}
-
-	printf("\nThe upper triangular matrix U\n");
-
-	for (i = 0; i < n; i++)
-	{
+		// Prepare the vectors of the discretized boundary value problem
+		double d1 = -1 - 2 * pow(i, 2) / PI2;
+		double d2 = pow(i, 2) / PI2;
 		for (j = 0; j < i; j++)
 		{
-			printf("      \t" );
+			l2[j] = d1;
+
+			if (j > 0)
+			{
+				l3[j - 1] = d2;
+			}
+
+			if (j + 1 < i)
+			{
+				l1[j + 1] = d2;
+			}
+
+			b[j] = -5 * sin(2*j * PI / i);
 		}
 
-		for (j = i; j < n; j++)
+		// Apply LU-Decomp to solve it
+		LUDecompTridiagnoal(l1, l2, l3, b, l, u, x, g);
+
+		// Compute the maximum error
+		double dblMaxError = 0;
+
+		for (j = 0; j < i; j++)
 		{
-			printf("%6.2f\t", u[i][j]);
+			double temp = abs(b[j] - sin(2 * x[j]));
+			if (temp > dblMaxError)
+			{
+				dblMaxError = temp;
+			}
 		}
-		
-		printf("\n");
+
+		// Output the results to one excel file, later we can analyze this file.
+		ofile << std::setw(6) << i << "," << std::setw(15) << dblMaxError << std::endl;
 	}
 
-	printf("\n********************************\nThe solution is \n");
-	for (i = 0; i < n; i++)
-	{
-		printf("%6.2f ", x[i]);
-	}
+	ofile.close();
 
 	printf("\n");
 }
