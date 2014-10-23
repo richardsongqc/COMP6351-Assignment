@@ -40,4 +40,8 @@ public:
 	int GetSize() const;
 };
 
+
+
+	
+	
 #endif //__VECTOR_H__
