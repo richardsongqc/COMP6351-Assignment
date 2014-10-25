@@ -32,6 +32,36 @@ CVector& CVector::operator =(const CVector& vec) 				// Assignment operator
 	return *this;
 }
 
+bool CVector::operator==(double dbl) const
+{
+	for (std::vector<double>::const_iterator iter = m_vec.begin();
+		iter != m_vec.end();
+		iter++)
+	{
+		if (*iter != dbl)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool CVector::operator<(double dbl) const
+{
+	for (std::vector<double>::const_iterator iter = m_vec.begin();
+		iter != m_vec.end();
+		iter++)
+	{
+		if ( abs(*iter) >= dbl)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 // access to the elements of the CMatrix                     
 double& CVector::operator [](int nPos)					
 {

@@ -9,33 +9,21 @@
 class CVector 
 {
 private:
-	// size of vector
 	int m_maxSize;
-
-	// data of vector
-	std::vector<double> m_vec;		
+	std::vector<double> m_vec;
 
 public:
-	// Constructor, zero-length  vector
 	CVector();
-
-	// Constructor, vector of length MaxSize
 	CVector(int MaxSize);
+	CVector(const CVector& vec);
+	~CVector();
 
-	// Copy constructor
-	CVector(const CVector& vec);							
-	~CVector();												
-
-	// Assignment operator 
-	CVector& operator =(const CVector& vec);				
-	                   
-	// access to the elements of the CMatrix  
-	double& operator [](int nPos);							
+	CVector& operator =(const CVector& vec);				// Assignment operator 
+	// access to the elements of the CMatrix                     
+	double& operator [](int nPos);
 	const double& operator [](int nPos) const;
 
-	// validate whether the size of vector is legal
 	int CheckSize(int nSize);
-
 	// get Rows and Columns of CMatrix
 	int GetSize() const;
 };

@@ -84,7 +84,7 @@ void LUDecomp(
 void LUDecompTridiagnoal(
 	CMatrix a, 
 	CVector b, 
-	CVector& x, CVector& g)
+	CMatrix& l, CMatrix& u, CVector& x, CVector& g)
 {
 	int i = 0, j = 0, k = 0, n = b.GetSize();
 	CVector l1(b.GetSize());		//	vector a
@@ -123,6 +123,19 @@ void LUDecompTridiagnoal(
 		g[i] = b[i] - gama[i]*g[i-1];
 	}
 
+	// computation of L matrix and U matrix
+	for (i = 0; i < n; i++)
+	{
+		l[i][i] = 1;
+		u[i][i] = beta[i];
+
+		if (i + 1 < n)
+		{
+			l[i + 1][i] = gama[i + 1];
+			u[i][i + 1] = l3[i];
+		}
+	}
+
 	// backsubstitution algorithm ( Page 38 )
 	x[n - 1] = g[n - 1] / beta[n - 1];
 	for (i = n - 2; i >= 0; i-- )
@@ -137,8 +150,7 @@ void LUDecompTridiagnoal(
 void LUDecompTridiagnoal(
 	CVector l1, CVector l2, CVector l3,							// vector a, b, c in Tridiagnonal matrix
 	CVector b,													
-	//CMatrix& l, CMatrix& u, 
-	CVector& x, CVector& g)
+	CMatrix& l, CMatrix& u, CVector& x, CVector& g)
 {
 	int i = 0, j = 0, k = 0, n = b.GetSize();
 
@@ -158,18 +170,18 @@ void LUDecompTridiagnoal(
 		g[i] = b[i] - gama[i] * g[i - 1];
 	}
 
-	//// computation of L matrix and U matrix
-	//for (i = 0; i < n; i++)
-	//{
-	//	l[i][i] = 1;
-	//	u[i][i] = beta[i];
+	// computation of L matrix and U matrix
+	for (i = 0; i < n; i++)
+	{
+		l[i][i] = 1;
+		u[i][i] = beta[i];
 
-	//	if (i + 1 < n)
-	//	{
-	//		l[i + 1][i] = gama[i + 1];
-	//		u[i][i + 1] = l3[i];
-	//	}
-	//}
+		if (i + 1 < n)
+		{
+			l[i + 1][i] = gama[i + 1];
+			u[i][i + 1] = l3[i];
+		}
+	}
 
 	// backsubstitution algorithm ( Page 38 )
 	x[n - 1] = g[n - 1] / beta[n - 1];
@@ -191,58 +203,52 @@ void main()
 	std::ofstream ofile;              
 	ofile.open("d:\\myfile.csv");     
 
-	for (i = 10; i < 1000000; i*=2)
+	for (i = 4; i < 10000; i++)
 	{
-		int nDim = i - 1;
-		CVector l1(nDim);
-		CVector l2(nDim);
-		CVector l3(nDim);
-		//CMatrix l(nDim, nDim);
-		//CMatrix u(nDim, nDim);
-		CVector b(nDim), x(nDim), g(nDim);
+		CVector l1(i);
+		CVector l2(i);
+		CVector l3(i);
+		CMatrix l(i, i);
+		CMatrix u(i, i);
+		CVector b(i), x(i), g(i);
 
 		// Prepare the vectors of the discretized boundary value problem
+		double d1 = -1 - 2 * pow(i, 2) / PI2;
 		double d2 = pow(i, 2) / PI2;
-		double d1 = -1 - 2 * d2;
-		for (j = 0; j < nDim; j++)
+		for (j = 0; j < i; j++)
 		{
 			l2[j] = d1;
-		
 
 			if (j > 0)
 			{
 				l3[j - 1] = d2;
 			}
 
-			if (j + 1 < nDim)
+			if (j + 1 < i)
 			{
 				l1[j + 1] = d2;
 			}
 
-			b[j] = -5 * sin(2 * (j+1) * PI / i);
+			b[j] = -5 * sin(2*j * PI / i);
 		}
 
 		// Apply LU-Decomp to solve it
-		LUDecompTridiagnoal(l1, l2, l3, b, /*l, u, */x, g);
+		LUDecompTridiagnoal(l1, l2, l3, b, l, u, x, g);
 
 		// Compute the maximum error
 		double dblMaxError = 0;
 
-		for (j = 0; j < nDim; j++)
+		for (j = 0; j < i; j++)
 		{
-			double temp = abs(x[j] - sin(2 * (j + 1) * PI / i));
+			double temp = abs(b[j] - sin(2 * x[j]));
 			if (temp > dblMaxError)
 			{
 				dblMaxError = temp;
 			}
 		}
-		
-		double dbl = 4;
-		dbl /= 3;
-		dbl /= d2;
+
 		// Output the results to one excel file, later we can analyze this file.
-		ofile << std::setw(6) << i << "," << std::setw(15) << dblMaxError << "," << std::setw(15) << dbl << std::endl;
-		printf("%d\n", i);
+		ofile << std::setw(6) << i << "," << std::setw(15) << dblMaxError << std::endl;
 	}
 
 	ofile.close();

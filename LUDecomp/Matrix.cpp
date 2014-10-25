@@ -10,6 +10,38 @@ CMatrix::CMatrix() :
 	m_vec.assign(m_row, vector<double>(m_col));
 }
 
+//void CMatrix::initialize()                
+//{
+//	m_row = 0;
+//	m_col = 0;
+//	m_dt = 0;
+//}
+//
+//	
+//void CMatrix::dimension(unsigned row, unsigned col)                
+//{
+//	m_row = row;
+//	m_col = col;
+//
+//	vector< vector<double> > array(3);
+//
+//	for (int i = 0; i < 3; i++)
+//	{
+//		array[i].resize(3);
+//	}
+//		
+//
+//
+//	m_dt = new double*[m_row];
+//	double* ptTmp = new double[m_row*m_col];
+//
+//	// make row pointer point to start of each row
+//	for (unsigned irow = 0; irow != m_row; ++irow) 
+//	{
+//		m_dt[irow] = &(ptTmp[irow*m_col]);
+//	}
+//}
+
 // two constructors
 	
 CMatrix::CMatrix(int row, int col) :

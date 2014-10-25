@@ -29,6 +29,9 @@ public:
 	// Assignment operator 
 	CVector& operator =(const CVector& vec);				
 	                   
+	bool operator==(double dbl) const;
+	bool operator<(double dbl) const;
+
 	// access to the elements of the CMatrix  
 	double& operator [](int nPos);							
 	const double& operator [](int nPos) const;

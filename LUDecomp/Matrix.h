@@ -10,18 +10,14 @@ typedef std::vector<std::vector<double> >    MATRIXELEMENTTYPE;
 class CMatrix
 {
 private:
-	int m_row;												// rows of CMatrix
-	int m_col;												// columns of CMatrix
-	MATRIXELEMENTTYPE   m_vec;        						// data of matrix
+	int m_row;
+	int m_col;												// rows and columns of CMatrix
+	MATRIXELEMENTTYPE   m_vec;        
 
 public:
-	// Constructor, zero-length  vector
-	CMatrix();				
-
-	// Constructor, vector of length MaxSize
-	CMatrix(int row, int col);		
-
-	// Copy constructor	
+	// constructors
+	CMatrix();
+	CMatrix(int row, int col);						
 	CMatrix(const CMatrix& mat);                   
 	~CMatrix();												// Destructor        
 	CMatrix& operator =(const CMatrix& mat);				// Assignment operator  
@@ -31,9 +27,8 @@ public:
 	std::vector<double>& operator [](int row);
 	const std::vector<double>& operator [](int row) const;
 
-	// validate whether the size of vector is legal
+
 	int CheckRowCol(int row, int col);
-	
 	// get Rows and Columns of CMatrix
 	int GetRows() const;           
 	int GetCols() const;           

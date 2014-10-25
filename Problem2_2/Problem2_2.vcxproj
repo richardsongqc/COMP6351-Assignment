@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D788DC38-F1DC-4F39-99C5-49898D9C1C64}</ProjectGuid>
+    <ProjectGuid>{633B7ED1-36E0-4A4E-9D4E-91BE831335EE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Problem2_1</RootNamespace>
+    <RootNamespace>Problem2_2</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -86,7 +86,7 @@
     <ClCompile Include="..\cmn\ludcom.cpp" />
     <ClCompile Include="..\cmn\Matrix.cpp" />
     <ClCompile Include="..\cmn\Vector.cpp" />
-    <ClCompile Include="prob2_1.cpp" />
+    <ClCompile Include="prob2_2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
