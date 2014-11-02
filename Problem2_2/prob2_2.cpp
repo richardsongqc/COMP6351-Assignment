@@ -25,7 +25,7 @@ void main()
 		double dbl = pow(N, 2);
 		for (i = 0; i < N; i++)
 		{
-			u[i] = (double)i / (double)N;
+			u[i] = 0;// (double)i / (double)N;
 		}
 
 		do
@@ -79,11 +79,11 @@ void main()
 			// Apply LU-Decomp to solve it
 			LUDecompTridiagnoal(l1, l2, l3, b, deltaU, g);
 
-			//printf("\nk = %d\n", k);
+			printf("\nk = %d\n", k);
 			for (i = 0; i < nDim; i++)
 			{
 				u[i+1] = deltaU[i] + u[i+1];
-				//printf("deltaU[%d]=%15.11f\tu[%d]=%12.11f\n", i, deltaU[i], i, u[i] );
+				printf("deltaU[%d]=%15.11f\tu[%d]=%12.11f\n", i, deltaU[i], i, u[i] );
 			}
 
 			if (deltaU < 0.00000000001)
