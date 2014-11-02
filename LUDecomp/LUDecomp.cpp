@@ -203,7 +203,7 @@ void main()
 	std::ofstream ofile;              
 	ofile.open("d:\\myfile.csv");     
 
-	for (i = 4; i < 10000; i++)
+	for (i = 4; i < 1000000; i*=2)
 	{
 		CVector l1(i);
 		CVector l2(i);

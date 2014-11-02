@@ -18,16 +18,18 @@ void main()
 		CVector l1(nDim);
 		CVector l2(nDim);
 		CVector l3(nDim);
-		CVector b(nDim), x(nDim), g(nDim), y(nDim), f(N + 1);
+		CVector b(nDim), u(nDim), g(nDim), y(nDim), f(N + 1);
 
 		// Prepare the vectors of the discretized boundary value problem
-		for (i = 0; i < N; i++)
+		double d = 2 * PI / N;
+		for (i = 0; i < N+1; i++)
 		{
-			f[i] = -5 * sin(2 * i * PI / N);
+			
+			f[i] = -5 * sin(i*d);
+			//printf("%f\n", f[i]);
 		}
 
 		f[N] = 0;
-
 		double d2 = pow(N, 2) / PI2;
 		double d1 = -2 * d2 - 10 / 12;
 		double d0 = d2 - 1 / 12;
@@ -47,33 +49,35 @@ void main()
 
 			b[i] = (f[i] + 10 * f[i + 1] + f[i + 2]) / 12;
 			
+			//printf("%11.8f + 10 * %11.8f + %11.8f = b[%d] = %11.8f\n", f[i], f[i + 1], f[i + 2], i, b[i]);
 		}
 
 		// Apply LU-Decomp to solve it
-		LUDecompTridiagnoal(l1, l2, l3, b, x, g);
+		LUDecompTridiagnoal(l1, l2, l3, b, u, g);
 
 		// Compute the maximum error
 		double dblMaxError = 0;
 
 		for (i = 0; i < nDim; i++)
 		{
-			double dbl = 0;
-			if (i == 0)
-			{
-				dbl = (10 * x[i] + x[i + 1]) / 12;
-			}
-			else if (i + 2 <= nDim)
-			{
-				dbl = (x[i-1] + 10 * x[i] + x[i + 1]) / 12;
-			}
-			else if (i + 1 == nDim)
-			{
-				dbl = (x[i-1] + 10 * x[i] ) / 12;
-			}
+			y[i] = sin((i + 1)*d);
+			//double dbl = 0;
+			//if (i == 0)
+			//{
+			//	dbl = (10 * x[i] + x[i + 1]) / 12;
+			//}
+			//else if (i + 2 <= nDim)
+			//{
+			//	dbl = (x[i-1] + 10 * x[i] + x[i + 1]) / 12;
+			//}
+			//else if (i + 1 == nDim)
+			//{
+			//	dbl = (x[i-1] + 10 * x[i] ) / 12;
+			//}
+			//
+			//y[i] = dbl;
 			
-			y[i] = dbl;
-
-			double temp = abs( x[i] + f[i]/5);
+			double temp = abs(b[i] -f[i+1]/*u[i] - y[i]*/);
 			if (temp > dblMaxError)
 			{
 				dblMaxError = temp;
@@ -82,7 +86,7 @@ void main()
 
 
 		// Output the results to one excel file, later we can analyze this file.
-		ofile << std::setw(6) << N << "," << std::setw(15) << dblMaxError << std::endl;
+		ofile << std::setw(6) << N << "," << std::setw(20) << dblMaxError << std::endl;
 		
 		printf("%d) %f\n", N, dblMaxError);
 	}
