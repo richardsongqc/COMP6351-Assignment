@@ -19,5 +19,10 @@ extern void LUDecompTridiagnoal(
 	CVector b,													
 	CVector& x, CVector& g)	;
 	
-	
+// Tridiagnonal Systems (Vector Form)
+extern void LUDecompTridiagnoal(
+	CVector l1, CVector l2, CVector l3,							// vector a, b, c in Tridiagnonal matrix
+	CVector b,
+	CVector& x );
+
 #endif //__LUDCOMP_H__

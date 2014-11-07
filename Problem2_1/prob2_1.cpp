@@ -12,21 +12,20 @@ void main()
 	std::ofstream ofile;
 	ofile.open("prob2_1.csv");
 
-	for (N = 10; N < 1000000; N *= 2)
+	for (N = 10; N < 1000000; N *=2)
 	{
 		int nDim = N - 1;
 		CVector l1(nDim);
 		CVector l2(nDim);
 		CVector l3(nDim);
-		CVector b(nDim), u(nDim), g(nDim), y(nDim), f(N + 1);
+		CVector b(nDim), u(nDim), y(N+1), f(N + 1);
 
 		// Prepare the vectors of the discretized boundary value problem
 		double d = 2 * PI / N;
 		for (i = 0; i < N+1; i++)
 		{
-			
 			f[i] = -5 * sin(i*d);
-			//printf("%f\n", f[i]);
+			y[i] = sin(i*d);
 		}
 
 		f[N] = 0;
@@ -53,7 +52,7 @@ void main()
 		}
 
 		// Apply LU-Decomp to solve it
-		LUDecompTridiagnoal(l1, l2, l3, b, u, g);
+		LUDecompTridiagnoal(l1, l2, l3, b, u);
 
 		// Compute the maximum error
 		double dblMaxError = 0;
@@ -61,34 +60,20 @@ void main()
 		for (i = 0; i < nDim; i++)
 		{
 			y[i] = sin((i + 1)*d);
-			//double dbl = 0;
-			//if (i == 0)
-			//{
-			//	dbl = (10 * x[i] + x[i + 1]) / 12;
-			//}
-			//else if (i + 2 <= nDim)
-			//{
-			//	dbl = (x[i-1] + 10 * x[i] + x[i + 1]) / 12;
-			//}
-			//else if (i + 1 == nDim)
-			//{
-			//	dbl = (x[i-1] + 10 * x[i] ) / 12;
-			//}
-			//
-			//y[i] = dbl;
 			
-			double temp = abs(b[i] -f[i+1]/*u[i] - y[i]*/);
+			//printf("u[%6d] = %11.8f\t y[%6d] = %11.8f\n", i + 1, u[i], i + 1, y[i]);
+
+			double temp = abs( f[i + 1] - ((y[i] -2 * y[i + 1] + y[i + 2]) / 12) );///*b[i] -f[i+1]*//*u[i] - y[i]*/);
 			if (temp > dblMaxError)
 			{
 				dblMaxError = temp;
 			}
 		}
 
-
 		// Output the results to one excel file, later we can analyze this file.
-		ofile << std::setw(6) << N << "," << std::setw(20) << dblMaxError << std::endl;
+		ofile << std::setw(6) << N << "," << std::setw(25) << dblMaxError << std::endl;
 		
-		printf("%d) %f\n", N, dblMaxError);
+		printf("%7d) %-15.11f\n", N, dblMaxError);
 	}
 
 	ofile.close();

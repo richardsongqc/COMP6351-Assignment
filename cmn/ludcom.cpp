@@ -102,3 +102,14 @@ void LUDecompTridiagnoal(
 
 	return;
 }
+
+void LUDecompTridiagnoal(
+	CVector l1, CVector l2, CVector l3,							// vector a, b, c in Tridiagnonal matrix
+	CVector b,
+	//CMatrix& l, CMatrix& u, 
+	CVector& x)
+{
+	CVector g(b.GetSize());
+
+	LUDecompTridiagnoal(l1, l2, l3, b, x, g);
+}

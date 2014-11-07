@@ -9,10 +9,10 @@ void main()
 	//const double PI = 3.1415926535897932384626433832795;
 	//const double PI2 = 9.8696044010893586188344909998762;
 
-	//std::ofstream ofile;
-	//ofile.open("d:\\prob2_2.csv");
+	std::ofstream ofile;
+	ofile.open("prob2_2.csv");
 
-	for (N = 5; N < 1000000; N++)
+	for (N = 3; N < 10; N++)
 	{
 		int k = 0;
 		int nDim = N - 1;
@@ -25,7 +25,7 @@ void main()
 		double dbl = pow(N, 2);
 		for (i = 0; i < N; i++)
 		{
-			u[i] = 0;// (double)i / (double)N;
+			u[i] = (double)i / (double)N;
 		}
 
 		do
@@ -79,29 +79,39 @@ void main()
 			// Apply LU-Decomp to solve it
 			LUDecompTridiagnoal(l1, l2, l3, b, deltaU, g);
 
-			printf("\nk = %d\n", k);
+			//printf("\nk = %d\n", k);
 			for (i = 0; i < nDim; i++)
 			{
 				u[i+1] = deltaU[i] + u[i+1];
-				printf("deltaU[%d]=%15.11f\tu[%d]=%12.11f\n", i, deltaU[i], i, u[i] );
+				//printf("deltaU[%d]=%15.11f\tu[%d]=%12.11f\n", i, deltaU[i], i, u[i+1] );
+				// Output the results to one excel file, later we can analyze this file.
+				//ofile << std::setw(25) << u[i + 1] << ",";
 			}
+
+			
 
 			if (deltaU < 0.00000000001)
 			{
-				printf("\nk = %d\n", k);
+				//printf("\nk = %d\n", k);
 				break;
 			}
 
-			printf("\n");
+			//printf("\n");
 
 			k++;
 		} 
 		while (k < 1000  );
 
+		for (i = 0; i < nDim; i++ )
+		{
+			ofile << std::setw(25) << u[i + 1] << ",";
+		}
+		ofile << std::endl;
+
 		printf("%d) \n", N);
 	}
 
-	//ofile.close();
+	ofile.close();
 
 	printf("\n");
 }
