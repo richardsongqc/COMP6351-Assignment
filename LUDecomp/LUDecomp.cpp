@@ -203,7 +203,7 @@ void main()
 	std::ofstream ofile;              
 	ofile.open("d:\\myfile.csv");     
 
-	for (i = 4; i < 1000000; i*=2)
+	for (i = 10; i < 1000000; i*=2)
 	{
 		CVector l1(i);
 		CVector l2(i);
@@ -240,7 +240,7 @@ void main()
 
 		for (j = 0; j < i; j++)
 		{
-			double temp = abs(b[j] - sin(2 * x[j]));
+			double temp = abs(x[j] + b[j] / 5);
 			if (temp > dblMaxError)
 			{
 				dblMaxError = temp;
@@ -249,6 +249,8 @@ void main()
 
 		// Output the results to one excel file, later we can analyze this file.
 		ofile << std::setw(6) << i << "," << std::setw(15) << dblMaxError << std::endl;
+
+		printf("%7d) %-15.11f\n", i, dblMaxError);
 	}
 
 	ofile.close();
