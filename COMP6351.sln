@@ -1,17 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LUDecomp", "LUDecomp\LUDecomp.vcxproj", "{2DFD9F9E-DA09-4947-879B-585690ADDA45}"
 EndProject
-<<<<<<< HEAD
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Problem2_1", "Problem2_1\Problem2_1.vcxproj", "{D788DC38-F1DC-4F39-99C5-49898D9C1C64}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Problem2_2", "Problem2_2\Problem2_2.vcxproj", "{633B7ED1-36E0-4A4E-9D4E-91BE831335EE}"
 EndProject
-=======
->>>>>>> parent of 7637e27... seperate definition
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Problem3", "Problem3\Problem3.vcxproj", "{6F2361DA-FD06-42F4-8C3C-DFA831DAB790}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,7 +21,6 @@ Global
 		{2DFD9F9E-DA09-4947-879B-585690ADDA45}.Debug|Win32.Build.0 = Debug|Win32
 		{2DFD9F9E-DA09-4947-879B-585690ADDA45}.Release|Win32.ActiveCfg = Release|Win32
 		{2DFD9F9E-DA09-4947-879B-585690ADDA45}.Release|Win32.Build.0 = Release|Win32
-<<<<<<< HEAD
 		{D788DC38-F1DC-4F39-99C5-49898D9C1C64}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D788DC38-F1DC-4F39-99C5-49898D9C1C64}.Debug|Win32.Build.0 = Debug|Win32
 		{D788DC38-F1DC-4F39-99C5-49898D9C1C64}.Release|Win32.ActiveCfg = Release|Win32
@@ -31,8 +29,10 @@ Global
 		{633B7ED1-36E0-4A4E-9D4E-91BE831335EE}.Debug|Win32.Build.0 = Debug|Win32
 		{633B7ED1-36E0-4A4E-9D4E-91BE831335EE}.Release|Win32.ActiveCfg = Release|Win32
 		{633B7ED1-36E0-4A4E-9D4E-91BE831335EE}.Release|Win32.Build.0 = Release|Win32
-=======
->>>>>>> parent of 7637e27... seperate definition
+		{6F2361DA-FD06-42F4-8C3C-DFA831DAB790}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6F2361DA-FD06-42F4-8C3C-DFA831DAB790}.Debug|Win32.Build.0 = Debug|Win32
+		{6F2361DA-FD06-42F4-8C3C-DFA831DAB790}.Release|Win32.ActiveCfg = Release|Win32
+		{6F2361DA-FD06-42F4-8C3C-DFA831DAB790}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,28 +5,40 @@
 
 void main()
 {
-	int N = 0, i = 0;
-	//const double PI = 3.1415926535897932384626433832795;
-	//const double PI2 = 9.8696044010893586188344909998762;
+	int N = 100, i = 0;
+	CVector u(N + 1);
+	double dblLamda = 0;
 
 	std::ofstream ofile;
-	ofile.open("prob2_2.csv");
+	ofile.open("prob3.csv");
 
-	for (N = 4; N < 40; N*=2)
+	ofile << ",";
+
+	for (i = 0; i < N; i++)
+	{
+		ofile << (double)i / (double)N << ",";
+	}
+
+	ofile << "1" << std::endl;
+
+	// Prepare the vectors of the discretized boundary value problem
+	double dbl = pow(N, 2);
+
+	for (i = 0; i < N+1; i++)
+	{
+		u[i] = 0;// (double)i / (double)N;
+	}
+
+	for (dblLamda = 0; dblLamda < 40; dblLamda += 1)
 	{
 		int k = 0;
 		int nDim = N - 1;
 		CVector l1(nDim);
 		CVector l2(nDim);
 		CVector l3(nDim);
-		CVector b(nDim), deltaU(nDim), g(nDim), u(N+1);
+		CVector b(nDim), deltaU(nDim), g(nDim);
 
-		// Prepare the vectors of the discretized boundary value problem
-		double dbl = pow(N, 2);
-		for (i = 0; i < N; i++)
-		{
-			u[i] = 0;// (double)i / (double)N;
-		}
+		printf("%.3f) \n", dblLamda);
 
 		do
 		{
@@ -57,11 +69,11 @@ void main()
 					u2 = u[N];
 				}
 			           
-				b[i] = -dbl* (u0 - 2 * u1 + u2) - (exp(u0) + 10 * exp(u1) + exp(u2)) / ((double)12);
+				b[i] = -dbl* (u0 - 2 * u1 + u2) - dblLamda*(exp(u0) + 10 * exp(u1) + exp(u2)) / ((double)12);
 
-				double d0 = dbl + exp(u0) / ((double)12);
-				double d1 = -2 * dbl + 10 * exp(u1) / ((double)12);
-				double d2 = dbl + exp(u2) / ((double)12);
+				double d0 = dbl + dblLamda*(exp(u0) / ((double)12));
+				double d1 = -2 * dbl + 10 * dblLamda* (exp(u1) / ((double)12));
+				double d2 = dbl + dblLamda* (exp(u2) / ((double)12));
 
 				l2[i] = d1;
 
@@ -83,6 +95,10 @@ void main()
 			for (i = 0; i < nDim; i++)
 			{
 				u[i+1] = deltaU[i] + u[i+1];
+				if (_finite(u[i + 1]) == 0)
+				{
+					throw;
+				}
 				//printf("deltaU[%d]=%15.11f\tu[%d]=%12.11f\n", i, deltaU[i], i, u[i+1] );
 				// Output the results to one excel file, later we can analyze this file.
 				//ofile << std::setw(25) << u[i + 1] << ",";
@@ -90,7 +106,7 @@ void main()
 
 			if (deltaU < 0.00000000001)
 			{
-				//printf("\nk = %d\n", k);
+				printf("\nk = %d\n", k);
 				break;
 			}
 
@@ -100,13 +116,12 @@ void main()
 		} 
 		while (k < 1000  );
 
-		for (i = 0; i < nDim; i++ )
+		ofile << std::setw(25) << dblLamda << ",";
+		for (i = 0; i < N; i++ )
 		{
-			ofile << std::setw(25) << u[i + 1] << ",";
-		}
-		ofile << std::endl;
-
-		printf("%d) \n", N);
+			ofile << std::setw(25) << u[i] << ",";
+		} 
+		ofile << "0" << std::endl;
 	}
 
 	ofile.close();
