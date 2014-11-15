@@ -27,6 +27,7 @@ double GetIntegral(CVector v, int N)
 void main()
 {
 	int N = 40, i = 0;
+	double dblLimit = pow(0.1, 20);
 	CVector u(N + 1), bu(N+1);
 	double dblLamda = 0;
 
@@ -45,13 +46,56 @@ void main()
 	// Prepare the vectors of the discretized boundary value problem
 	double dbl = pow(N, 2);
 
-	for (i = 0; i < N+1; i++)
-	{
-		u[i] = 0;// (double)i / (double)N;
-	}
+	//for (i = 0; i < N+1; i++)
+	//{
+	//	u[i] = 0;// (double)i / (double)N;
+	//}
+	u[0 ] = 0.0000000000000;
+	u[1 ] = 0.2823891844000;
+	u[2 ] = 0.5616385780200;
+	u[3 ] = 0.8367352184100;
+	u[4 ] = 1.1063627597000;
+	u[5 ] = 1.3047245315000;
+	u[6 ] = 1.4981548973000;
+	u[7 ] = 1.6856021186000;
+	u[8 ] = 1.8658348095000;
+	u[9 ] = 2.0001139772000;
+	u[10] = 2.1284244625000;
+	u[11] = 2.2499505967000;
+	u[12] = 2.3638180656000;
+	u[13] = 2.4820436474000;
+	u[14] = 2.5879537854000;
+	u[15] = 2.6801791150000;
+	u[16] = 2.7574051180000;
+	u[17] = 2.8110651920000;
+	u[18] = 2.8519926112000;
+	u[19] = 2.8796584800000;
+	u[20] = 2.8936924388000;
+	u[21] = 2.8938958517000;
+	u[22] = 2.8802500390000;
+	u[23] = 2.8529420916000;
+	u[24] = 2.8123377648000;
+	u[25] = 2.7585628902000;
+	u[26] = 2.6925236742000;
+	u[27] = 2.6150004774000;
+	u[28] = 2.5268465560000;
+	u[29] = 2.4103991867000;
+	u[30] = 2.2818895009000;
+	u[31] = 2.1427664169000;
+	u[32] = 1.9944047168000;
+	u[33] = 1.7777560044000;
+	u[34] = 1.5489690335000;
+	u[35] = 1.3105196672000;
+	u[36] = 1.0644562450000;
+	u[37] = 0.8045977215000;
+	u[38] = 0.5398528351600;
+	u[39] = 0.2713590271900;
+	u[40] = 0.0000000000000;
+
+
 
 	double deltaLamda = 1;
-	for (dblLamda = 0; dblLamda < 5; dblLamda += deltaLamda)
+	for (dblLamda = 2; deltaLamda > dblLimit; dblLamda -= deltaLamda)
 	{
 		int k = 0;
 		int nDim = N - 1;
@@ -121,7 +165,7 @@ void main()
 				for (i = 0; i < nDim; i++)
 				{
 					u[i + 1] = deltaU[i] + u[i + 1];
-					if (_finite(u[i + 1]) == 0)
+					if (_finite(u[i + 1]) == 0 && _isnan(u[i+1]) != 0)
 					{
 						throw MyException();
 					}
@@ -130,7 +174,7 @@ void main()
 					//ofile << std::setw(25) << u[i + 1] << ",";
 				}
 
-				if (deltaU < 0.00000000001)
+				if (deltaU < dblLimit )
 				{
 					printf("\nk = %d\n", k);
 					break;
@@ -146,15 +190,20 @@ void main()
 		{
 			cout << "*****************************************************************" << endl;
 			cout << "\t!!!Lamda = " << dblLamda << "!!!" << endl;
-			dblLamda -= deltaLamda;
-			deltaLamda /= (double)10;
+			dblLamda += deltaLamda;
+			deltaLamda /= (double)2;
 			u = bu;
-			if (deltaLamda < pow(0.1,15))
+			if (deltaLamda < dblLimit)
 			{
 				printf("\n============================================================\nLamda = %.15f\n", dblLamda);
 				break;
 			}
 			continue;
+		}
+
+		if (dblLamda == deltaLamda)
+		{
+			deltaLamda /= 2;
 		}
 
 		printf("\nLamda = %.15f \t delta = %.15f\n", dblLamda, deltaLamda);
@@ -163,9 +212,17 @@ void main()
 		{
 			ofile << std::setw(15) << u[i] << ",";
 		}
-		ofile << "0," << GetIntegral(u,N) << std::endl;
+		double dblIntegral = GetIntegral(u, N);
+		ofile << "0," << dblIntegral << std::endl;
+
+		if (dblIntegral < 0)
+		{
+			break;
+		}
 
 		bu = u;
+		
+		
 	}
 
 	ofile.close();
