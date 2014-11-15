@@ -94,7 +94,7 @@ void main()
 
 
 
-	double deltaLamda = 1;
+	double deltaLamda = 0.01;
 	for (dblLamda = 2; deltaLamda > dblLimit; dblLamda -= deltaLamda)
 	{
 		int k = 0;
@@ -188,23 +188,23 @@ void main()
 		}
 		catch (MyException & e)
 		{
-			cout << "*****************************************************************" << endl;
-			cout << "\t!!!Lamda = " << dblLamda << "!!!" << endl;
-			dblLamda += deltaLamda;
-			deltaLamda /= (double)2;
-			u = bu;
-			if (deltaLamda < dblLimit)
-			{
-				printf("\n============================================================\nLamda = %.15f\n", dblLamda);
-				break;
-			}
+			//cout << "*****************************************************************" << endl;
+			//cout << "\t!!!Lamda = " << dblLamda << "!!!" << endl;
+			//dblLamda += deltaLamda;
+			//deltaLamda /= (double)2;
+			//u = bu;
+			//if (deltaLamda < dblLimit)
+			//{
+			//	printf("\n============================================================\nLamda = %.15f\n", dblLamda);
+			//	break;
+			//}
 			continue;
 		}
 
-		if (dblLamda == deltaLamda)
-		{
-			deltaLamda /= 2;
-		}
+		//if (dblLamda == deltaLamda)
+		//{
+		//	deltaLamda /= 2;
+		//}
 
 		printf("\nLamda = %.15f \t delta = %.15f\n", dblLamda, deltaLamda);
 		ofile << std::setprecision(17) << dblLamda << ",";
