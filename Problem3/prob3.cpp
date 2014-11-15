@@ -64,7 +64,7 @@ void main()
 
 		try
 		{
-			bu = u;
+			
 			do
 			{
 				u[N] = 0;
@@ -139,22 +139,25 @@ void main()
 				//printf("\n");
 
 				k++;
-			} while (k < 1000);
+			} 
+			while (k < 1000);
 		}
 		catch (MyException & e)
 		{
-			cout << "Caught an exception of type: " << typeid(e).name() << endl;
-			cout << "Lamda = " << dblLamda << endl;
+			cout << "*****************************************************************" << endl;
+			cout << "\t!!!Lamda = " << dblLamda << "!!!" << endl;
 			dblLamda -= deltaLamda;
 			deltaLamda /= (double)10;
 			u = bu;
 			if (deltaLamda < pow(0.1,15))
 			{
+				printf("\n============================================================\nLamda = %.15f\n", dblLamda);
 				break;
 			}
 			continue;
 		}
 
+		printf("\nLamda = %.15f \t delta = %.15f\n", dblLamda, deltaLamda);
 		ofile << std::setprecision(17) << dblLamda << ",";
 		for (i = 0; i < N; i++)
 		{
@@ -162,7 +165,7 @@ void main()
 		}
 		ofile << "0," << GetIntegral(u,N) << std::endl;
 
-
+		bu = u;
 	}
 
 	ofile.close();
