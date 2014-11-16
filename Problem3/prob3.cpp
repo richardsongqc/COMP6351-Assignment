@@ -94,7 +94,7 @@ void main()
 
 
 
-	double deltaLamda = 0.01;
+	double deltaLamda = 0.0001;
 	for (dblLamda = 2; deltaLamda > dblLimit; dblLamda -= deltaLamda)
 	{
 		int k = 0;
@@ -206,7 +206,7 @@ void main()
 		//	deltaLamda /= 2;
 		//}
 
-		printf("\nLamda = %.15f \t delta = %.15f\n", dblLamda, deltaLamda);
+		//printf("\nLamda = %.15f \t delta = %.15f\n", dblLamda, deltaLamda);
 		ofile << std::setprecision(17) << dblLamda << ",";
 		for (i = 0; i < N; i++)
 		{
