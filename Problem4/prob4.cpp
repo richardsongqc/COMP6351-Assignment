@@ -31,7 +31,7 @@ void main()
 	double h2 = pow(h, 2);
 	CVector u(N + 1), bu(N+1), pu(N+1);
 	double t = 0;
-	double deltaT = pow(0.1, 4);
+	double deltaT = pow(0.1, 3)*5;
 	double dblLamda = 4;
 
 	std::ofstream ofile;
