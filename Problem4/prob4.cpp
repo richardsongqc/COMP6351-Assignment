@@ -51,7 +51,7 @@ void main()
 
 	for (i = 1; i < N + 1; i++)
 	{
-		u[i] = 0; //(double)i / (double)N;
+		u[i] = 1; //(double)i / (double)N;
 	}
 
 	for (t = 0; t < 1; t += deltaT)
@@ -95,7 +95,7 @@ void main()
 					u2 = u[N];
 				}
 
-				bu[i+1] = u1 + deltaT *(u0 - 2 * u1 + u2) / h2 + deltaT*dblLamda*exp(u1);
+				bu[i+1] = u1 + deltaT *(u0 - 2 * u1 + u2) / h2 + deltaT*dblLamda*u1*(1-u1);
 				if (_finite(bu[i]) == 0)
 				{
 					throw MyException();
