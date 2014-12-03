@@ -32,7 +32,7 @@ void main()
 	CVector u(N + 1), bu(N + 1), pu(N + 1);
 	double t = 0;
 	double deltaT = pow(0.1, 2);
-	double dblLamda = 2;
+	double dblLamda = 4;
 
 	std::ofstream ofile;
 	ofile.open("prob4.csv");
