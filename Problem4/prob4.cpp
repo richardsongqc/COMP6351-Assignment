@@ -26,12 +26,12 @@ double GetIntegral(CVector v, int N)
 
 void main()
 {
-	int N = 40, i = 0;
+	int N = 100, i = 0;
 	double h = ((double)1) / ((double)N);
 	double h2 = pow(h, 2);
 	CVector u(N + 1), bu(N + 1), pu(N + 1);
 	double t = 0;
-	double deltaT = pow(0.1, 2)/2;
+	double deltaT = pow(0.1, 2);
 	double dblLamda = 2;
 
 	std::ofstream ofile;
@@ -55,9 +55,11 @@ void main()
 	}
 
 	pu = u;
+	int nIdx = 0;
 
-	for (t = 0; t < 1; t += deltaT)
+	for (t = 0; t < 5; t += deltaT, nIdx++)
 	{
+		
 		int k = 0;
 		int nDim = N - 1;
 		CVector l1(nDim);
@@ -167,12 +169,16 @@ void main()
 		pu = u;
 
 		printf("\tT = %.15f \t deltaT = %.15f\n", t, deltaT);
-		ofile << std::setprecision(17) << t << ",";
-		for (i = 0; i < N; i++)
+
+		if (nIdx % 2 == 0)
 		{
-			ofile << std::setw(15) << u[i] << ",";
+			ofile << std::setprecision(17) << t << ",";
+			for (i = 0; i < N; i++)
+			{
+				ofile << std::setw(15) << u[i] << ",";
+			}
+			ofile << "0," << GetIntegral(u, N) << std::endl;
 		}
-		ofile << "0," << GetIntegral(u, N) << std::endl;
 
 		bu = u;
 	}
